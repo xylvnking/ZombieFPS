@@ -49,6 +49,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Weapon")
 	void Fire();
 
+	// do stuff here
+
 protected:
 	/** Ends gameplay for this component. */
 	UFUNCTION()
