@@ -18,7 +18,7 @@ UTP_WeaponComponent::UTP_WeaponComponent()
 }
 
 
-void UTP_WeaponComponent::Fire()
+void UTP_WeaponComponent::FireProjectile()
 {
 	if (Character == nullptr || Character->GetController() == nullptr)
 	{
@@ -90,9 +90,33 @@ void UTP_WeaponComponent::AttachWeapon(AZombieFPSCharacter* TargetCharacter)
 		if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerController->InputComponent))
 		{
 			// Fire
-			EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Triggered, this, &UTP_WeaponComponent::Fire);
+			EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Triggered, this, &UTP_WeaponComponent::FireProjectile);
 		}
 	}
+}
+
+void UTP_WeaponComponent::FireHitScan()
+{
+}
+
+void UTP_WeaponComponent::GetLookData(const FInputActionValue& Value)
+{
+}
+
+void UTP_WeaponComponent::OnStartFire()
+{
+}
+
+void UTP_WeaponComponent::OnStopFire()
+{
+}
+
+void UTP_WeaponComponent::StartHorizontalRecoil(float Value)
+{
+}
+
+void UTP_WeaponComponent::StartVerticalRecoil(float Value)
+{
 }
 
 void UTP_WeaponComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
