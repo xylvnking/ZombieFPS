@@ -25,10 +25,13 @@ UTP_WeaponComponent::UTP_WeaponComponent()
 	// Default offset from the character location for projectiles to spawn
 	MuzzleOffset = FVector(100.0f, 0.0f, 10.0f);
 	//RotationBeforeFiring = FRotator(0.0, 0.0, 0.0);
+	
 }
 
 void UTP_WeaponComponent::AttachWeapon(AZombieFPSCharacter* TargetCharacter)
 {
+
+	
 	Character = TargetCharacter;
 	if (Character == nullptr)
 	{
@@ -54,9 +57,6 @@ void UTP_WeaponComponent::AttachWeapon(AZombieFPSCharacter* TargetCharacter)
 
 		if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerController->InputComponent))
 		{
-			// Fire
-			//EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Triggered, this, &UTP_WeaponComponent::FireProjectile);
-
 			EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Started, this, &UTP_WeaponComponent::OnStartFire);
 			EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Completed, this, &UTP_WeaponComponent::OnStopFire);
 
@@ -99,18 +99,21 @@ void UTP_WeaponComponent::BeginPlay()
 
 	RecoilTimeline.AddInterpFloat(HorizontalCurve, XRecoilCurve);
 	RecoilTimeline.AddInterpFloat(VerticalCurve, YRecoilCurve);
+
+	
+	
 }
 
 
 
 void UTP_WeaponComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
-	Super::TickComponent(DeltaTime, LEVELTICK_All, ThisTickFunction);
 
+	//Super::TickComponent(DeltaTime, LEVELTICK_All, ThisTickFunction);
+	//Super::TickComponent(DeltaTime, LEVELTICK_PauseTick, ThisTickFunction);
 	if (RecoilTimeline.IsPlaying())
 	{
 		RecoilTimeline.TickTimeline(DeltaTime);
-		UE_LOG(LogTemp, Warning, TEXT("recoil playing"));
 	}
 
 	if (RecoilTimeline.IsReversing())
@@ -123,16 +126,11 @@ void UTP_WeaponComponent::TickComponent(float DeltaTime, ELevelTick TickType, FA
 
 		RecoilTimeline.TickTimeline(DeltaTime);
 
-		UE_LOG(LogTemp, Warning, TEXT("recoil is reversing"));
-
 		// this check wasn't required before piecing the project back together. It makes sense, but I don't get why I didn't need it before.
 		if (Character == nullptr || Character->GetController() == nullptr) { return; }
 		FRotator NewRotation = UKismetMathLibrary::RInterpTo(Character->GetControlRotation(), RotationBeforeFiring, DeltaTime, 2.0f);
 		Character->Controller->ClientSetRotation(NewRotation);
 	}
-
-	UE_LOG(LogTemp, Warning, TEXT("component is ticking"));
-	
 }
 
 void UTP_WeaponComponent::OnStartFire()
@@ -144,6 +142,7 @@ void UTP_WeaponComponent::OnStartFire()
 	RecoilTimeline.PlayFromStart();
 	FireHitScan();
 	GetWorld()->GetTimerManager().SetTimer(AutomaticFireHandle, this, &UTP_WeaponComponent::FireHitScan, 0.1, true);
+	
 }
 
 void UTP_WeaponComponent::OnStopFire()
@@ -154,6 +153,8 @@ void UTP_WeaponComponent::OnStopFire()
 	}
 	RecoilTimeline.ReverseFromEnd();
 	GetWorld()->GetTimerManager().ClearTimer(AutomaticFireHandle);
+	
+	//this->SetComponentTickEnabled(false);
 }
 
 void UTP_WeaponComponent::FireProjectile()
@@ -229,12 +230,13 @@ void UTP_WeaponComponent::FireHitScan()
 			UGameplayStatics::SpawnDecalAtLocation(World, HitDecalMaterial, FVector(15.0f), Hit.Location, Hit.ImpactNormal.Rotation(), 10.0f);
 		}
 	}
-	else
+	/*else
 	{
 		OnStopFire();
-	}
+	}*/
 	if (FireAnimation != nullptr)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("trying to animate"));
 		// Get the animation object for the arms mesh
 		UAnimInstance* AnimInstance = Character->GetMesh1P()->GetAnimInstance();
 		if (AnimInstance != nullptr)
@@ -247,9 +249,9 @@ void UTP_WeaponComponent::FireHitScan()
 
 void UTP_WeaponComponent::GetLookData(const FInputActionValue& Value)
 {
-	//UE_LOG(LogTemp, Warning, TEXT("getting look data"));FVector2D LookAxisVector = Value.Get<FVector2D>();
 	FVector2D LookAxisVector = Value.Get<FVector2D>();
 	MostRecentLookValuesFromWeaponInputComponent = FVector2D(LookAxisVector.X, LookAxisVector.Y);
+	
 }
 
 
