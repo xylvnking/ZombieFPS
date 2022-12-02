@@ -22,6 +22,7 @@ void UTP_PickUpComponent::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedCo
 	AZombieFPSCharacter* Character = Cast<AZombieFPSCharacter>(OtherActor);
 	if(Character != nullptr)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("attaching weapon"));
 		// Notify that the actor is being picked up
 		OnPickUp.Broadcast(Character);
 
