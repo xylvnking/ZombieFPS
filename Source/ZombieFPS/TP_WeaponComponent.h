@@ -67,6 +67,8 @@ protected:
 	UFUNCTION()
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
+	
+
 
 
 private:
@@ -76,7 +78,7 @@ private:
 
 
 
-public:
+public: // everything below this is what I added
 
 	/*
 	The DefaultMappingContext contains the Look input action, so we need to declare it here to bind it and access the values
@@ -100,10 +102,15 @@ public:
 	// does this need to be public?
 	FTimeline RecoilTimeline;
 
-protected:
+protected: 
+
+	virtual void BeginPlay() override;
+
+	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
 
 	// Used to cancel recoil
-	FVector2D MostRecentLookValuesFromWeapon;
+	FVector2D MostRecentLookValuesFromWeaponInputComponent;
 
 	void OnStartFire();
 	void OnStopFire();
