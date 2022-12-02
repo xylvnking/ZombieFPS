@@ -8,6 +8,7 @@
 #include "NiagaraFunctionLibrary.h"
 #include "NiagaraComponent.h"
 
+
 #include "Components/TimelineComponent.h"
 #include "TP_WeaponComponent.generated.h"
 
@@ -143,6 +144,7 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "AdvancedRecoil | FX")
 		float CoefStrength;
+
 
 public:
 	

@@ -14,6 +14,7 @@
 #include "NiagaraFunctionLibrary.h"
 #include "NiagaraComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Engine/EngineTypes.h"
 
 // Sets default values for this component's properties
 UTP_WeaponComponent::UTP_WeaponComponent()
@@ -223,11 +224,17 @@ void UTP_WeaponComponent::FireHitScan()
 
 		if (bHasHitSomething)
 		{
+
+			//const FDamageEvent;
+
 			UNiagaraComponent* NiagaraComp = UNiagaraFunctionLibrary::SpawnSystemAtLocation(World, HitParticleFx, Hit.Location, Hit.ImpactNormal.Rotation(), FVector(0.2f), true, true);
 			NiagaraComp->SetNiagaraVariableFloat(FString("StrengthCoef"), CoefStrength);
 
 			if (!HitDecalMaterial) { return; }
 			UGameplayStatics::SpawnDecalAtLocation(World, HitDecalMaterial, FVector(15.0f), Hit.Location, Hit.ImpactNormal.Rotation(), 10.0f);
+			//Hit.GetActor()->TakeDamage(100, FDamageEvent &DamageEvent,;
+			//Hit.GetActor()->TakeDamage(10.0f, Damage, Character->GetController(), Character);
+			//Hit.GetActor()->TakeDamage
 		}
 	}
 	/*else
@@ -236,7 +243,6 @@ void UTP_WeaponComponent::FireHitScan()
 	}*/
 	if (FireAnimation != nullptr)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("trying to animate"));
 		// Get the animation object for the arms mesh
 		UAnimInstance* AnimInstance = Character->GetMesh1P()->GetAnimInstance();
 		if (AnimInstance != nullptr)
