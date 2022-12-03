@@ -14,7 +14,9 @@
 #include "NiagaraFunctionLibrary.h"
 #include "NiagaraComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+
 #include "Engine/EngineTypes.h"
+
 
 // Sets default values for this component's properties
 UTP_WeaponComponent::UTP_WeaponComponent()
@@ -32,7 +34,6 @@ UTP_WeaponComponent::UTP_WeaponComponent()
 void UTP_WeaponComponent::AttachWeapon(AZombieFPSCharacter* TargetCharacter)
 {
 
-	
 	Character = TargetCharacter;
 	if (Character == nullptr)
 	{
@@ -232,9 +233,13 @@ void UTP_WeaponComponent::FireHitScan()
 
 			if (!HitDecalMaterial) { return; }
 			UGameplayStatics::SpawnDecalAtLocation(World, HitDecalMaterial, FVector(15.0f), Hit.Location, Hit.ImpactNormal.Rotation(), 10.0f);
-			//Hit.GetActor()->TakeDamage(100, FDamageEvent &DamageEvent,;
-			//Hit.GetActor()->TakeDamage(10.0f, Damage, Character->GetController(), Character);
-			//Hit.GetActor()->TakeDamage
+
+			if (IsValid(Hit.GetActor()))
+			{
+				UE_LOG(LogTemp, Log, TEXT("Trace hit actor: %s"), *Hit.GetActor()->GetName());
+				//Hit.GetActor()->TakeDamage(10.0f,);
+			}
+			
 		}
 	}
 	/*else
