@@ -15,6 +15,8 @@
 #include "NiagaraComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 
+
+
 #include "Engine/EngineTypes.h"
 
 
@@ -238,6 +240,9 @@ void UTP_WeaponComponent::FireHitScan()
 			{
 				UE_LOG(LogTemp, Log, TEXT("Trace hit actor: %s"), *Hit.GetActor()->GetName());
 				//Hit.GetActor()->TakeDamage(10.0f,);
+				//Hit.GetActor()->TakeDamage(AActor * DamageActor, float Damage, const UDamageType * DamageType, AController * InstigatedBy, AActor * DamageCauser);
+				//Hit.GetActor()->TakeDamage(AActor * DamageActor, float Damage, const UDamageType * DamageType, AController * InstigatedBy, AActor * DamageCauser);
+				UGameplayStatics::ApplyDamage(Hit.GetActor(), 10.0f, Character->GetController(), Character, NULL);
 			}
 			
 		}
