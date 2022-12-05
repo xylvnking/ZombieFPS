@@ -243,6 +243,10 @@ void UTP_WeaponComponent::FireHitScan()
 				//Hit.GetActor()->TakeDamage(AActor * DamageActor, float Damage, const UDamageType * DamageType, AController * InstigatedBy, AActor * DamageCauser);
 				//Hit.GetActor()->TakeDamage(AActor * DamageActor, float Damage, const UDamageType * DamageType, AController * InstigatedBy, AActor * DamageCauser);
 				UGameplayStatics::ApplyDamage(Hit.GetActor(), 10.0f, Character->GetController(), Character, NULL);
+				if (HitSound != nullptr)
+				{
+					UGameplayStatics::PlaySoundAtLocation(this, HitSound, Character->GetActorLocation());
+				}
 			}
 			
 		}
@@ -251,6 +255,10 @@ void UTP_WeaponComponent::FireHitScan()
 	{
 		OnStopFire();
 	}*/
+	if (FireSound != nullptr)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, FireSound, Character->GetActorLocation());
+	}
 	if (FireAnimation != nullptr)
 	{
 		// Get the animation object for the arms mesh
